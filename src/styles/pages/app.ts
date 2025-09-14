@@ -9,8 +9,22 @@ export const Container = styled('div', {
 })
 
 export const Header = styled('header', {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+
   padding: '2rem 0',
   width: '100%',
   maxWidth: 1180,
   margin: '0 auto',
+})
+
+export const CartIcon = styled('div', {
+  padding: '12px',
+  backgroundColor: '#202024',
+  borderRadius: '6px',
+
+  '&:hover': {
+    backgroundColor: '#E1E1E6',
+  }
 })
