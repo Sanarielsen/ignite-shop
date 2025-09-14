@@ -50,6 +50,14 @@ export const ProductDetails = styled('div', {
     lineHeight: 1.6,
     color: '$gray300',
   },
+})
+
+export const ProductActions = styled('div', {
+
+  marginTop: 'auto',
+
+  display: 'flex',
+  justifyContent: 'space-between',
 
   button: {
     marginTop: 'auto',
@@ -61,6 +69,9 @@ export const ProductDetails = styled('div', {
     cursor: 'pointer',
     fontWeight: 'bold',
     fontSize: '$md',
+
+    width: '100%',
+    margin: '0 1rem',
 
     '&:disabled': {
       opacity: 0.6,

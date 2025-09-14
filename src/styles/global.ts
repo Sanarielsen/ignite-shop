@@ -16,5 +16,20 @@ export const globalStyles = globalCss({
   'body, input, textarea, button': {
     fontFamily: 'Roboto',
     fontWeight: 400,
-  }
+  },
+
+  'button': {
+    background: 'none',
+    color: 'inherit',
+    border: 'none',
+    padding: 0,
+    font: 'inherit',
+    cursor: 'pointer',
+    outline: 'inherit',
+  },
+
+  '.sonner-success': {
+    backgroundColor: "$green500 !important",
+    color: '$white !important'
+  },
 })

@@ -1,20 +1,36 @@
+"use client"
+
 import { AppProps } from "next/app";
 import { globalStyles } from "../styles/global";
+import { Container } from "../styles/pages/app";
 
-import logoImg from '../assets/logo.svg';
-import { Container, Header } from "../styles/pages/app";
-
-import Image from 'next/image'
+import { CartProvider } from "use-shopping-cart";
+import { HeaderApp } from "../components/HeaderApp";
+import { Toaster } from "sonner";
 
 globalStyles();
 
-export default function App({ Component, pageProps }: AppProps) {    
+export default function App({ Component, pageProps }: AppProps) { 
+
+  const stripePublicKey = process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY;
+  const defaultPath = process.env.NEXT_PUBLIC_URL;
+
+  if (!stripePublicKey) {
+    throw new Error('STRIPE_SECRET_KEY is not set in environment variables.');
+  }
+
   return (
-    <Container>
-      <Header>
-        <Image src={logoImg} alt="" width={130} height={52}/>
-      </Header>
-      <Component {...pageProps} />
-    </Container>
+    <CartProvider
+      cartMode="checkout-session"
+      stripe={stripePublicKey}
+      currency={'BRL'}
+      shouldPersist={true}
+    >
+      <Container>
+        <HeaderApp />
+        <Toaster/>
+        <Component {...pageProps} />
+      </Container>
+    </CartProvider>
   )
 }
