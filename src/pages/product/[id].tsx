@@ -1,12 +1,14 @@
 import { stripe } from '@/src/lib/stripe';
-import { ImageContainer, ProductContainer, ProductDetails } from '@/src/styles/pages/product';
+import { ImageContainer, ProductActions, ProductContainer, ProductDetails } from '@/src/styles/pages/product';
 import axios from 'axios';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { toast } from 'sonner';
 import Stripe from 'stripe';
+import { useShoppingCart } from 'use-shopping-cart';
 
 interface ProductProps {
   product: {
@@ -21,6 +23,8 @@ interface ProductProps {
 
 export default function Product( { product }: ProductProps ) {
   const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] = useState(false)
+
+  const { addItem } = useShoppingCart();
 
   async function handleBuyProduct() {
     try {
@@ -37,6 +41,21 @@ export default function Product( { product }: ProductProps ) {
       setIsCreatingCheckoutSession(false);
       alert('Falha ao redirecionar ao checkout')
     }
+  }
+
+  function handleAddProductOnCart() {
+    addItem({
+      name: product.name,
+      description: product.description,
+      id: product.id,
+      price: Number(product.price),
+      currency: 'BRL',
+      image: product.imageUrl
+    })
+
+    toast.success('Produto adicionado no carrinho com sucesso', { 
+      className: 'sonner-success'
+    });
   }
 
   const { isFallback } = useRouter();
@@ -58,11 +77,18 @@ export default function Product( { product }: ProductProps ) {
           <h1>{product.name}</h1>
           <span>{product.price}</span>
           <p>{product.description}</p>
+          
+          <ProductActions>
+            <button 
+              onClick={handleBuyProduct}
+              disabled={isCreatingCheckoutSession}
+            >Comparar agora</button>
 
-          <button 
-            onClick={handleBuyProduct}
-            disabled={isCreatingCheckoutSession}
-          >Comprar agora</button>
+            <button 
+              onClick={handleAddProductOnCart}
+              disabled={isCreatingCheckoutSession}
+            >Adicionar ao carrinho</button>
+          </ProductActions>
         </ProductDetails>
       </ProductContainer>
     </>

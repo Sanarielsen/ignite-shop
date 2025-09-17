@@ -1,29 +1,34 @@
+"use client"
+
 import { AppProps } from "next/app";
 import { globalStyles } from "../styles/global";
+import { Container } from "../styles/pages/app";
 
-import logoImg from '../assets/logo.svg';
-import cartImg from '../assets/CartIcon.svg';
-import { CartIcon, Container, Header } from "../styles/pages/app";
-
-import Image from 'next/image'
+import { CartProvider } from "use-shopping-cart";
+import { HeaderApp } from "../components/HeaderApp";
+import { Toaster } from "sonner";
 
 globalStyles();
 
-export default function App({ Component, pageProps }: AppProps) {    
-
-  function handleClickOpenCart() {
-    console.log("handleClickOpenCart() -> Executed")
-  }
+export default function App({ Component, pageProps }: AppProps) { 
 
   return (
-    <Container>
-      <Header>
-        <Image src={logoImg} alt="" width={130} height={52}/>
-        <CartIcon onClick={handleClickOpenCart}>
-          <Image src={cartImg} alt="" width={24} height={24}/>
-        </CartIcon>
-      </Header>
-      <Component {...pageProps} />
-    </Container>
+    <CartProvider
+      mode="payment"
+      cartMode="client-only"
+      stripe={process.env.STRIPE_PUBLIC_KEY as string}
+      successUrl={`${process.env.NEXT_PUBLIC_BASE_URL}/success`}
+      cancelUrl={`${process.env.NEXT_PUBLIC_BASE_URL}/`}
+      currency="BRL"
+      allowedCountries={['BR']}
+      billingAddressCollection={true}
+      shouldPersist={false}
+    >
+      <Container>
+        <HeaderApp />
+        <Toaster/>
+        <Component {...pageProps} />
+      </Container>
+    </CartProvider>
   )
 }
