@@ -4,26 +4,24 @@ import logoImg from '../assets/logo.svg';
 import cartImg from '../assets/CartIcon.svg';
 import { useShoppingCart } from "use-shopping-cart";
 import Link from "next/link";
+import { useState } from "react";
+import { CartPlace } from "./CartPlace";
 
 export function HeaderApp() {
+  const [showCartSide, setShowCartSide] = useState(false)
 
   const { cartCount } = useShoppingCart();
-
-  function handleClickOpenCart() {
-    console.log("handleClickOpenCart() -> Executed")
-
-    console.log("Quantidade de itens = ", cartCount)
-  }
 
   return (
     <Header>
       <Link href="/">
         <Image src={logoImg} alt="" width={130} height={52}/>
       </Link>
-      <CartItemsCount>{ cartCount }</CartItemsCount>
-      <CartIcon onClick={handleClickOpenCart}>
+      <CartIcon onClick={() => setShowCartSide(!showCartSide)}>
         <Image src={cartImg} alt="" width={24} height={24}/>
-      </CartIcon>
+      </CartIcon>      
+      <CartItemsCount>{ cartCount }</CartItemsCount>
+      <CartPlace open={showCartSide} onClose={() => setShowCartSide(!showCartSide)} />
     </Header>
   )
 }
