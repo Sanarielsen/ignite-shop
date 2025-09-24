@@ -34,10 +34,23 @@ export const DescriptionSection = styled('div', {
   'div > h4#titleProduct': {
     color: '$gray300'
   },
-
-  'p': {
-    color: '$green500',
-    fontWeight: 'bold',
-  }
   
+})
+
+export const DescriptionActions = styled('div', {
+
+  display: 'flex !important',
+
+  'span': {
+    
+    color: '$rose700',
+    fontWeight: 'bold',
+    cursor: 'pointer',
+
+    '&:hover': {
+      color: '$rose900',
+      fontWeight: 'bold',
+      cursor: 'pointer',
+    }
+  },
 })

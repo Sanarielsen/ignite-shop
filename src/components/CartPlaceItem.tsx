@@ -1,26 +1,35 @@
 import Image from "next/image";
-import imgExample from "../assets/Camisetas/1.png"
 
-import { Container, DescriptionSection, ImageSection } from "../styles/components/cartplaceitem";
+import { Container, DescriptionActions, DescriptionSection, ImageSection } from "../styles/components/cartplaceitem";
+import { useShoppingCart } from "use-shopping-cart";
 
 interface CartPlaceItemProps {
+  id: string,
+  price_id: string,
   title: string,
+  quantity: number
   price: string,
-  imageUrl: string,
+  imageUrl: string | null,
 }
 
-export function CartPlaceItem( { title, price, imageUrl }: CartPlaceItemProps) {
+export function CartPlaceItem( product: CartPlaceItemProps) {
+
+  const { decrementItem, removeItem } = useShoppingCart();
+
   return (
     <Container>
       <ImageSection>
-        <Image src={imgExample} alt="" width={92} height={92} />
+        { product.imageUrl && <Image src={product.imageUrl} alt="" width={92} height={92} /> }
       </ImageSection>
       <DescriptionSection>
         <div>          
-          <h4 id="titleProduct">{title}</h4>
-          <h4>{price}</h4>
+          <h4 id="titleProduct">{product.title}</h4>
+          <h4>{product.price} | Quantidade: {product.quantity}</h4>
         </div>
-        <p>Cancelar</p>        
+        <DescriptionActions>
+          <span onClick={() => removeItem(product.id)}>Remover</span>
+          <span onClick={() => decrementItem(product.id)}>Remover uma unidade</span>
+        </DescriptionActions>
       </DescriptionSection>
     </Container>
   )

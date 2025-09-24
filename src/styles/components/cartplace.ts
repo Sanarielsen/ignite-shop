@@ -1,5 +1,13 @@
 import { styled } from "..";
 
+export const BackgroundContainer = styled('main', {
+  display: 'var(--open-cart)',
+  position: 'fixed',
+  inset: 0,
+  background: 'rgba(0,0,0,0.4)',
+  zIndex: 1000,
+})
+
 export const Container = styled('main', {
   display: 'var(--open-cart)',
 
@@ -57,6 +65,21 @@ export const ListItems = styled('div', {
   
 })
 
+export const ListEmpty = styled('div', {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+})
+
+export const DescriptionEmpty = styled('div', {
+  display: 'block',
+  textAlign: 'center',
+
+  'p': {
+    marginTop: '2rem',
+  }
+})
+
 export const Footer = styled('div', {
   display: 'grid',
   gridTemplateColumns: 'repeat(2, 1fr)',
@@ -80,8 +103,21 @@ export const Footer = styled('div', {
     height: '70px',
     borderRadius: '8px',
     
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+
+    '&:disabled': {
+      backgroundColor: '$gray300',
+      color: '#000',
+      cursor: 'not-allowed',
+
+      '&:hover': {
+        backgroundColor: '$gray300',
+        color: '#000',
+      }
+    },
+
   },
+
 
   'button.fullCollumn': {
     gridColumn: '1 / span 2',

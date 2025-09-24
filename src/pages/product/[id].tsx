@@ -16,6 +16,7 @@ interface ProductProps {
     name: string,
     imageUrl: string,
     price: string,
+    formattedPrice: string,
     description: string,
     defaultPriceId: string,
   }
@@ -26,18 +27,19 @@ export default function Product( { product }: ProductProps ) {
 
   const { addItem } = useShoppingCart();
 
+
   async function handleBuyProduct() {
     try {
       setIsCreatingCheckoutSession(true);
 
-      const response = await axios.post('/api/checkout', {
+      const response = await axios.post('/api/checkout_product', {
         priceId: product.defaultPriceId
       })
 
       const { checkoutUrl } = response.data;
 
       window.location.href = checkoutUrl
-    } catch (err) {
+    } catch {
       setIsCreatingCheckoutSession(false);
       alert('Falha ao redirecionar ao checkout')
     }
@@ -75,7 +77,7 @@ export default function Product( { product }: ProductProps ) {
 
         <ProductDetails>
           <h1>{product.name}</h1>
-          <span>{product.price}</span>
+          <span>{product.formattedPrice}</span>
           <p>{product.description}</p>
           
           <ProductActions>
@@ -126,10 +128,11 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({ para
   return {
     props: {
       product: {
-        id: product.id,
+        id: price.id,
         name: product.name,
         imageUrl: product.images[0],
-        price: new Intl.NumberFormat('pt-BR', {
+        price: price.unit_amount,
+        formattedPrice: new Intl.NumberFormat('pt-BR', {
           style: 'currency',
           currency: 'BRL'
         }).format(price.unit_amount! / 100),

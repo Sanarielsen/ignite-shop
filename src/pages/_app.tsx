@@ -12,17 +12,19 @@ globalStyles();
 
 export default function App({ Component, pageProps }: AppProps) { 
 
+  const stripePublicKey = process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY;
+  const defaultPath = process.env.NEXT_PUBLIC_URL;
+
+  if (!stripePublicKey) {
+    throw new Error('STRIPE_SECRET_KEY is not set in environment variables.');
+  }
+
   return (
     <CartProvider
-      mode="payment"
-      cartMode="client-only"
-      stripe={process.env.STRIPE_PUBLIC_KEY as string}
-      successUrl={`${process.env.NEXT_PUBLIC_BASE_URL}/success`}
-      cancelUrl={`${process.env.NEXT_PUBLIC_BASE_URL}/`}
-      currency="BRL"
-      allowedCountries={['BR']}
-      billingAddressCollection={true}
-      shouldPersist={false}
+      cartMode="checkout-session"
+      stripe={stripePublicKey}
+      currency={'BRL'}
+      shouldPersist={true}
     >
       <Container>
         <HeaderApp />
